@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Pets4You</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="/logo.png" alt="Pets4You Logo">
+            </div>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/discover">Discover</a></li>
+                <li><a href="/messages">Messages</a></li>
+                <li><a href="/profile">Profile</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Error: <%= error.status || "500" %></h1>
+        <p><%= message || "An error occurred" %></p>
+    </main>
+    <footer>
+        <p>&copy; 2024 Pets4You. All rights reserved.</p>
+    </footer>
+</body>
+</html>

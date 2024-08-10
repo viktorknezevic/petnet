@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <nav>
+        <div class="logo">
+            <img src="/logo.png" alt="Pets4You Logo">
+        </div>
+        <ul id="nav-menu">
+            <li><a href="/">Home</a></li>
+            <li><a href="/discover">Discover</a></li>
+            <li><a href="/messages">Messages</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle">Create Post</a>
+                <div class="dropdown-content">
+                    <a href="/post-pet">Post Your Pet</a>
+                </div>
+            </li>
+        </ul>
+        <div class="hamburger" onclick="toggleNav()">☰</div>
+    </nav>
+  </header>
+    
+    <main>
+        <div class="profile">
+            <!-- Display Profile Picture and Info -->
+            <img src="<%= pet.petPhoto %>" alt="Pet Photo" class="profile-pic">
+            <h1><%= pet.petName %></h1>
+            <p>Type/Breed: <em><%= pet.petType %></em></p>
+            <p>Bio: <%= pet.petBio %></p>
+            
+            <!-- Settings Icon -->
+            <button id="settingsBtn" class="button">⚙️ Edit</button>
+
+            <!-- Modal for editing pet info -->
+            <div id="settingsModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Edit Pet Info</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <form action="/profile" method="POST" enctype="multipart/form-data">
+                        <label for="petName">Name:</label>
+                        <input type="text" id="petName" name="petName" value="<%= pet.petName %>">
+                        <label for="petType">Type/Breed:</label>
+                        <input type="text" id="petType" name="petType" value="<%= pet.petType %>">
+                        <label for="petBio">Bio:</label>
+                        <textarea id="petBio" name="petBio"><%= pet.petBio %></textarea>
+                        <label for="petPhoto">Profile Photo:</label>
+                        <input type="file" id="petPhoto" name="petPhoto" accept="image/*">
+                        <button type="submit" class="button">Save</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Pet Posts -->
+            <div class="pet-posts">
+                <h2>Pet's Posts</h2>
+                <% petPosts.forEach(function(post) { %>
+                    <article class="post">
+                        <div class="post-header">
+                            <img src="<%= post.petPhoto %>" alt="Pet Photo" class="post-photo"> <!-- Changed class -->
+                            <p><strong><%= post.petName %></strong></p>
+                        </div>
+                        <div class="post-content">
+                            <p><%= post.petBio %></p> <!-- Displaying the post's description -->
+                        </div>
+                    </article>
+                <% }); %>
+            </div>
+        </div>
+    </main>
+
+    <script src="/scripts/modal.js"></script>
+    <script>
+        // Modal functionality
+        const modal = document.getElementById('settingsModal');
+        const btn = document.getElementById('settingsBtn');
+        const span = document.getElementsByClassName('close')[0];
+
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

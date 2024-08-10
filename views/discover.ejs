@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover - Pets4You</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="/logo.png" alt="Pets4You Logo">
+            </div>
+            <ul id="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/discover">Discover</a></li>
+                <li><a href="/messages">Messages</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">Create Post</a>
+                    <div class="dropdown-content">
+                        <a href="/post-pet">Post Your Pet</a>
+                    </div>
+                </li>
+            </ul>
+            <div class="hamburger" onclick="toggleNav()">☰</div>
+        </nav>
+    </header>
+    <main>
+        <section class="feed">
+            <% if (posts.length === 0) { %>
+                <p>No posts available. Check back later!</p>
+            <% } else { %>
+                <% posts.forEach(post => { %>
+                    <article class="post" id="post-<%= post._id %>">
+                        <div class="post-header">
+                            <% if (post.profilePic) { %>
+                                <img src="<%= post.profilePic %>" alt="Profile Picture" class="profile-pic">
+                            <% } %>
+                            <div class="post-info">
+                                <h2 class="pet-name"><%= post.petName %></h2>
+                                <p class="post-description"><%= post.petDescription %></p>
+                            </div>
+                        </div>
+                        <% if (post.petPhoto) { %>
+                            <img src="<%= post.petPhoto %>" alt="Pet Photo" class="post-photo">
+                        <% } %>
+                        <div class="post-actions">
+                            <button class="button like-button" onclick="likePost('<%= post._id %>', this)">🐾 <%= post.likes %></button>
+                            <button class="button comment-button" onclick="toggleComments('<%= post._id %>')">💬 <%= post.comments.length %></button>
+                            <button class="button share-button">🔗 Share</button>
+                        </div>
+                        <div class="comments-section" id="comments-<%= post._id %>" style="display: none;">
+                            <ul>
+                                <% post.comments.forEach(comment => { %>
+                                    <li><%= comment.text %> - <%= comment.userId %> (<%= new Date(comment.timestamp).toLocaleString() %>)</li>
+                                <% }) %>
+                            </ul>
+                            <textarea id="comment-input-<%= post._id %>" placeholder="Type comment..."></textarea>
+                            <button class="button send-button" onclick="sendComment('<%= post._id %>')">Send</button>
+                        </div>
+                    </article>
+                <% }) %>
+            <% } %>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Pets4You. All rights reserved.</p>
+    </footer>
+    <script>
+        function toggleNav() {
+            const navMenu = document.getElementById('nav-menu');
+            navMenu.classList.toggle('show');
+        }
+
+        function toggleComments(postId) {
+            const commentsSection = document.getElementById(`comments-${postId}`);
+            commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function sendComment(postId) {
+            const commentText = document.getElementById(`comment-input-${postId}`).value;
+            fetch(`/posts/${postId}/comment`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ text: commentText })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const commentsSection = document.getElementById(`comments-${postId}`);
+                    commentsSection.innerHTML += `<li>${commentText} - You (${new Date().toLocaleString()})</li>`;
+                    document.getElementById(`comment-input-${postId}`).value = '';
+                } else {
+                    alert('Failed to post comment.');
+                }
+            });
+        }
+
+        function likePost(postId, button) {
+            fetch(`/posts/${postId}/like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    button.innerHTML = `🐾 ${data.likes}`; // Update the like count
+                } else {
+                    alert('Failed to like the post.');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
