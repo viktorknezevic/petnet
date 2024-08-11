@@ -3,58 +3,553 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pets4You</title>
-    <link rel="stylesheet" href="/styles.css"> <!-- Ensure the path is correct -->
+    <title>PetNet - Futuristic Social Media for Pets</title>
+    <style>
+        /* Reset and global styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            color: #fff;
+            background: linear-gradient(135deg, #121212 0%, #1d1d1d 100%);
+            overflow-x: hidden;
+        }
+
+        /* Header styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #00e5ff;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+        }
+        header p {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 300;
+        }
+        header .nav-buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        header .nav-buttons a {
+            background-color: #00e5ff;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        header .nav-buttons a:hover {
+            background-color: #00bcd4;
+            transform: scale(1.05);
+        }
+        header .nav-buttons .home-btn {
+            background-color: #00e5ff;
+        }
+        header .nav-buttons .signup-btn {
+            background-color: #ff4081;
+        }
+
+        /* Navigation styles */
+        nav {
+            display: flex;
+            justify-content: center;
+            padding: 15px 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 80px;
+        }
+        nav a {
+            color: #00e5ff;
+            text-decoration: none;
+            padding: 0 20px;
+            font-size: 1.125rem;
+            font-weight: 500;
+            transition: color 0.3s, transform 0.3s;
+        }
+        nav a:hover {
+            color: #ffffff;
+            transform: scale(1.1);
+        }
+
+        /* Hero section styles */
+        .hero {
+            position: relative;
+            background: url('https://images.unsplash.com/photo-1505628346881-b72b27e84530?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            text-align: center;
+            padding: 0 20px;
+            z-index: 10;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 0;
+        }
+        .hero h2 {
+            font-size: 4rem;
+            font-weight: 800;
+            z-index: 2;
+            position: relative;
+            line-height: 1.2;
+            margin: 0;
+            text-shadow: 0 10px 20px rgba(0, 0, 0, 0.8);
+        }
+        .hero p {
+            font-size: 1.5rem;
+            margin: 10px 0;
+            z-index: 2;
+            position: relative;
+            text-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+        }
+        .hero .signup-button {
+            margin-top: 20px;
+            background-color: #ff4081;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+            padding: 15px 30px;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .hero .signup-button:hover {
+            background-color: #e040fb;
+            transform: scale(1.05);
+            z-index: 2;
+        }
+
+        /* Container and Features styles */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            overflow: hidden;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 60px 0;
+        }
+        .feature {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .feature:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+        }
+        .feature img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .feature h3 {
+            margin-top: 0;
+            font-size: 1.75rem;
+        }
+        .feature p {
+            font-size: 1rem;
+        }
+
+        /* CTA section styles */
+        .cta {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 40px 20px;
+            text-align: center;
+            margin: 60px 0;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+        }
+        .cta h2 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .cta a {
+            background-color: #00e5ff;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+            padding: 15px 30px;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .cta a:hover {
+            background-color: #00bcd4;
+            transform: scale(1.05);
+        }
+
+        /* Testimonials styles */
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 60px 0;
+        }
+        .testimonial {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        .testimonial img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+        .testimonial p {
+            font-size: 1.125rem;
+            margin: 10px 0;
+        }
+        .testimonial cite {
+            display: block;
+            font-size: 1rem;
+            color: #cccccc;
+        }
+
+        /* Team section styles */
+        .team {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 60px 0;
+        }
+        .team-member {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        .team-member img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+        .team-member h3 {
+            margin: 10px 0;
+            font-size: 1.25rem;
+        }
+        .team-member p {
+            font-size: 1rem;
+            color: #cccccc;
+        }
+
+        /* Contact Form styles */
+        .contact-form {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 40px 20px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            margin: 60px 0;
+        }
+        .contact-form h2 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .contact-form label {
+            display: block;
+            margin: 15px 0 5px;
+            font-weight: 500;
+        }
+        .contact-form input, .contact-form textarea {
+            width: calc(100% - 24px);
+            padding: 12px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            background: #2a2a2a;
+            color: #e0e0e0;
+            transition: border-color 0.3s;
+        }
+        .contact-form input:focus, .contact-form textarea:focus {
+            border-color: #00e5ff;
+            outline: none;
+        }
+        .contact-form button {
+            background-color: #00e5ff;
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .contact-form button:hover {
+            background-color: #00bcd4;
+            transform: scale(1.05);
+        }
+
+        /* Newsletter section styles */
+        .newsletter {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 40px 20px;
+            text-align: center;
+            margin: 60px 0;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+        }
+        .newsletter h2 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #00e5ff;
+            margin-bottom: 20px;
+        }
+        .newsletter p {
+            font-size: 1.125rem;
+            margin: 10px 0 20px;
+        }
+        .newsletter input {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            margin-top: 10px;
+            width: 70%;
+            font-size: 1rem;
+            background: #2a2a2a;
+            color: #e0e0e0;
+        }
+        .newsletter button {
+            background-color: #00e5ff;
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .newsletter button:hover {
+            background-color: #00bcd4;
+            color: #ffffff;
+        }
+
+        /* Footer styles */
+        footer {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            box-shadow: 0 -10px 20px rgba(0, 0, 0, 0.5);
+            margin-top: 60px;
+            backdrop-filter: blur(10px);
+        }
+        footer p {
+            margin: 0;
+            font-size: 1rem;
+        }
+        .social-links {
+            margin-top: 20px;
+        }
+        .social-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.5rem;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .social-links a:hover {
+            color: #00e5ff;
+            transform: scale(1.3);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .features, .team {
+                grid-template-columns: 1fr;
+            }
+            .feature, .team-member {
+                width: 100%;
+            }
+            .hero h2 {
+                font-size: 3rem;
+            }
+            .hero p {
+                font-size: 1.25rem;
+            }
+            .cta h2 {
+                font-size: 2rem;
+            }
+            .contact-form, .newsletter {
+                width: 90%;
+            }
+            .newsletter input {
+                width: 80%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .cta h2 {
+                font-size: 1.75rem;
+            }
+            .contact-form button, .newsletter button {
+                width: 100%;
+            }
+            .newsletter input {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav>
-            <div class="logo">
-                <img src="logo.png" alt="Pets4You Logo"> <!-- Placeholder for your cartoon dog logo -->
-            </div>
-            <ul id="nav-menu">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Discover</a></li>
-                <li><a href="#">Messages</a></li>
-                <li><a href="#">Profile</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle">Create Post</a>
-                    <div class="dropdown-content">
-                        <a href="/post-pet">Post Your Pet</a>
-                    </div>
-                </li>
-            </ul>
-            <div class="hamburger" onclick="toggleNav()">☰</div>
-        </nav>
+        <h1>PetNet</h1>
+        <div class="nav-buttons">
+            <a href="/discover" class="home-btn">Discover</a>
+            <a href="/profile" class="signup-btn">Sign Up</a>
+        </div>
+        <p>Your Ultimate Pet Social Network</p>
     </header>
-    <main>
-        <section class="feed">
-            <!-- Post example -->
-            <article class="post">
-                <div class="post-header">
-                    <img src="/baseimages/bellapfp.jpg" alt="Pet" class="profile-pic">
-                    <div class="post-info">
-                        <h2 class="pet-name">Bella</h2>
-                        <p class="post-date">August 10, 2024</p>
-                    </div>
-                </div>
-                <img src="/baseimages/bella.jpg" alt="Pet Photo" class="post-photo">
-                <div class="post-actions">
-                    <button class="like-button">🐾 Like</button>
-                    <button class="comment-button">💬 Comment</button>
-                    <button class="share-button">🔗 Share</button>
-                </div>
-            </article>
-        </section>
-    </main>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="#features">Features</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="hero">
+        <h2>Connect, Share, and Discover!</h2>
+        <p>Join the future of pet social networks. Share your pet's journey and explore a community of pet lovers.</p>
+        <a href="signup.html" class="signup-button">Sign Up Now</a>
+    </div>
+
+    <div class="container">
+        <div id="features" class="features">
+            <div class="feature">
+                <img src="https://images.unsplash.com/photo-1447684808650-354ae64db5b8?q=80&w=2067&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Share Pet Photos">
+                <h3>Share Pet Photos</h3>
+                <p>Showcase your pets with stunning photos and videos. Engage and get inspired by a vibrant community.</p>
+            </div>
+            <div class="feature">
+                <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Connect with Pet Owners">
+                <h3>Connect with Pet Owners</h3>
+                <p>Meet and follow fellow pet enthusiasts. Exchange stories, tips, and more in a dedicated network.</p>
+            </div>
+            <div class="feature">
+                <img src="https://plus.unsplash.com/premium_photo-1661835482382-8a287f3cf640?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Discover Pet Tips">
+                <h3>Discover Pet Tips</h3>
+                <p>Access expert advice and community tips on pet care, training, and health. Everything you need to know.</p>
+            </div>
+        </div>
+
+        <div class="cta">
+            <h2>Ready to Join Us?</h2><br>
+            <a href="signup.html">Sign Up Now</a>
+        </div>
+
+        <div class="testimonials">
+            <div class="testimonial">
+                <img src="https://images.pexels.com/photos/267614/pexels-photo-267614.jpeg" alt="Jake M.">
+                <p>"PetNet has transformed the way I connect with other pet owners. The community is amazing and the features are top-notch!"</p>
+                <cite>- Jake M.</cite>
+            </div>
+            <div class="testimonial">
+                <img src="https://images.unsplash.com/photo-1706805465420-75744171b10e?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Lisa K.">
+                <p>"The ultimate social platform for pet lovers. I found new friends, great tips, and the perfect space to share my pet’s adventures."</p>
+                <cite>- Lisa K.</cite>
+            </div>
+        </div>
+
+        <div id="contact" class="contact-form">
+            <h2>Contact Us</h2>
+            <form action="#">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+
+        <div class="newsletter">
+            <h2>Subscribe to Our Newsletter</h2>
+            <p>Stay updated with the latest news, tips, and updates from PetNet.</p>
+            <input type="email" placeholder="Enter your email">
+            <button type="submit">Subscribe</button>
+        </div>
+    </div>
+
     <footer>
-        <p>&copy; 2024 Pets4You. All rights reserved.</p>
+        <p>&copy; 2024 PetNet. All rights reserved.</p>
+        <a href="termsofservice.html" class="signup-button">Terms of Service</a>
     </footer>
+
     <script>
-        function toggleNav() {
-            const navMenu = document.getElementById('nav-menu');
-            navMenu.classList.toggle('show');
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            var menuToggle = document.querySelector('.menu-toggle');
+            var nav = document.querySelector('nav');
+
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    nav.classList.toggle('active');
+                });
+            }
+        });
     </script>
 </body>
 </html>

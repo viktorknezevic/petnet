@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groups - Pets4You</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- Ensure this path is correct -->
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="/logo.png" alt="Pets4You Logo"> <!-- Ensure this path is correct -->
+            </div>
+            <ul id="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/discover">Discover</a></li>
+                <li><a href="/messages">Messages</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/groups">Groups</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">Create Post</a>
+                    <div class="dropdown-content">
+                        <a href="/post-pet">Post Your Pet</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">Create Group</a>
+                    <div class="dropdown-content">
+                        <a href="/create-group">Create New Group</a>
+                    </div>
+                </li>
+            </ul>
+            <div class="hamburger" onclick="toggleNav()">☰</div>
+        </nav>
+    </header>
+    <main>
+        <h1>Groups</h1>
+        <ul class="groups-list">
+            <% groups.forEach(group => { %>
+                <li>
+                    <% if (group.profilePic) { %>
+                        <img src="data:<%= group.profilePic.contentType %>;base64,<%= group.profilePic.data.toString('base64') %>" alt="Group Profile Picture" class="group-pic">
+                    <% } %>
+                    <h2><%= group.name %></h2>
+                    <p><%= group.description %></p>
+                    <a href="/groups/<%= group._id %>" class="button view-group-button">View Group</a>
+                </li>
+            <% }) %>
+        </ul>
+    </main>
+    <footer>
+        <p>&copy; 2024 Pets4You. All rights reserved.</p>
+    </footer>
+    <script>
+        function toggleNav() {
+            const navMenu = document.getElementById('nav-menu');
+            if (navMenu.style.display === 'block') {
+                navMenu.style.display = 'none';
+            } else {
+                navMenu.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= group.name %> - Pets4You</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- Ensure this path is correct -->
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="/logo.png" alt="Pets4You Logo"> <!-- Ensure this path is correct -->
+            </div>
+            <ul id="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/discover">Discover</a></li>
+                <li><a href="/messages">Messages</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/groups">Groups</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">Create Post</a>
+                    <div class="dropdown-content">
+                        <a href="/post-pet">Post Your Pet</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">Create Group</a>
+                    <div class="dropdown-content">
+                        <a href="/create-group">Create New Group</a>
+                    </div>
+                </li>
+            </ul>
+            <div class="hamburger" onclick="toggleNav()">☰</div>
+        </nav>
+    </header>
+    <main class="card">
+        <% if (group) { %>
+            <h1><%= group.name %></h1>
+            <% if (group.profilePic) { %>
+                <img src="data:<%= group.profilePic.contentType %>;base64,<%= group.profilePic.data.toString('base64') %>" alt="Group Profile Picture" class="group-pic">
+            <% } %>
+            <p><%= group.description %></p>
+            <div class="messages-section">
+                <ul id="messages-list">
+                    <% group.messages.forEach(message => { %>
+                        <li><%= message.text %> - <%= message.username %> (<%= new Date(message.timestamp).toLocaleString() %>)</li>
+                    <% }) %>
+                </ul>
+                <textarea id="message-input" placeholder="Type message..."></textarea>
+                <button class="button send-button" onclick="sendMessage('<%= group._id %>')">Send</button>
+            </div>
+        <% } else { %>
+            <p>No group found with the specified ID.</p>
+        <% } %>
+    </main>
+    <footer>
+        <p>&copy; 2024 Pets4You. All rights reserved.</p>
+    </footer>
+    <script>
+        function sendMessage(groupId) {
+            const messageText = document.getElementById('message-input').value;
+            if (!messageText.trim()) {
+                alert('Message cannot be empty.');
+                return;
+            }
+            fetch(`/groups/${groupId}/message`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ text: messageText })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const messagesList = document.getElementById('messages-list');
+                    const newMessage = document.createElement('li');
+                    newMessage.textContent = `${messageText} - You (${new Date().toLocaleString()})`;
+                    messagesList.appendChild(newMessage);
+                    document.getElementById('message-input').value = '';
+                } else {
+                    alert('Failed to send message.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function joinGroup(groupId) {
+            fetch(`/groups/${groupId}/join`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('You have successfully joined the group!');
+                } else {
+                    alert('Failed to join the group.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function toggleNav() {
+            const navMenu = document.getElementById('nav-menu');
+            if (navMenu.style.display === 'block') {
+                navMenu.style.display = 'none';
+            } else {
+                navMenu.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

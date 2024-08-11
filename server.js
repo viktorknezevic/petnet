@@ -41,7 +41,7 @@ const config = {
   authRequired: false,
   auth0Logout: true,
   secret: process.env.SECRET,  // Ensure this is set in your .env file
-  baseURL: `http://localhost:${process.env.PORT || 3000}`,
+  baseURL: `http://192.168.1.100:${process.env.PORT || 3000}`,
   clientID: process.env.CLIENT_ID,  // Ensure this is set in your .env file
   issuerBaseURL: process.env.ISSUER_BASE_URL,  // Ensure this is set in your .env file
 };
@@ -183,7 +183,7 @@ app.post('/create-post', requiresAuth(), upload.single('petPhoto'), async (req, 
 // Discover route for rendering posts
 app.get('/discover', requiresAuth(), async (req, res) => {
   try {
-    const posts = await Post.find(); // Adjust query as needed
+    const posts = await Post.find().populate('userId'); // Ensure you have a reference to the user
     res.render('discover', { posts });
   } catch (err) {
     console.error(err);
@@ -196,8 +196,10 @@ const indexRouter = require('./routes/index');
 const discoverRouter = require('./routes/discover');
 const messagesRouter = require('./routes/messages');
 const postRoutes = require('./routes/posts'); // Assuming routes/posts.js
+const groupRouter = require('./routes/groups');
 
 app.use('/', indexRouter);
+app.use('/groups', groupRouter);
 app.use('/discover', discoverRouter);
 app.use('/messages', messagesRouter);
 app.use('/posts', postRoutes); // Ensure postRoutes does not interfere with /create-post
@@ -224,7 +226,13 @@ app.post('/posts/:id/comment', requiresAuth(), async (req, res) => {
     if (!post) {
       return res.status(404).json({ success: false, message: 'Post not found' });
     }
-    post.comments.push({ userId: req.oidc.user.sub, text: req.body.text });
+
+    const user = await User.findOne({ auth0Id: req.oidc.user.sub });
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    post.comments.push({ userId: req.oidc.user.sub, text: req.body.text, username: user.username });
     await post.save();
     res.json({ success: true });
   } catch (err) {
@@ -249,6 +257,6 @@ app.post('/posts/:id/like', requiresAuth(), async (req, res) => {
 });
 
 // Create and start server
-http.createServer(app).listen(process.env.PORT || 3000, () => {
-  console.log(`Listening on http://localhost:${process.env.PORT || 3000}`);
+http.createServer(app).listen(process.env.PORT || 3000, '192.168.1.100', () => {
+  console.log(`Listening on http://192.168.1.100:${process.env.PORT || 3000}`);
 });

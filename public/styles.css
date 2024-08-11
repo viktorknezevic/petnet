@@ -95,14 +95,12 @@ form label {
     font-weight: bold;
 }
 
-/* Ensure file input is visible */
 form input[type="file"] {
-    display: block; /* Change this to block or inline-block to make it visible */
+    display: block;
     margin-bottom: 15px;
     padding: 10px;
 }
 
-/* Add a label for file input styling */
 form .file-label {
     display: inline-block;
     padding: 10px 20px;
@@ -372,6 +370,187 @@ footer {
     transform: scale(1.05);
 }
 
+/* Groups Page Styles */
+.groups-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.groups-list li {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.group-pic {
+    width: 80px; /* Adjust size as needed */
+    height: 80px; /* Adjust size as needed */
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.groups-list h2 {
+    margin: 10px 0;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.groups-list p {
+    font-size: 16px;
+    color: #333;
+}
+
+/* Group Page Styles */
+.group-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+.group-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.group-card img {
+    width: 120px; /* Adjust as needed */
+    height: 120px; /* Adjust as needed */
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+.group-card h1 {
+    margin: 10px 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.group-card p {
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.group-card .view-group-button {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.group-card .view-group-button:hover {
+    background-color: #333;
+    transform: scale(1.05);
+}
+
+.messages-section {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.messages-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.messages-section li {
+    margin-bottom: 10px;
+}
+
+#message-input {
+    width: calc(100% - 22px); /* Adjust width for padding */
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    resize: vertical;
+}
+
+/* Card Layout for Main Content */
+main.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 800px; /* Adjust as needed */
+    margin: 20px auto; /* Center the card horizontally with margin auto */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center; /* Center text inside the card */
+}
+
+/* Ensure images fit well inside the card */
+main.card img.group-pic {
+    width: 120px; /* Adjust as needed */
+    height: 120px; /* Adjust as needed */
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+/* Style for textarea and button */
+main.card textarea {
+    width: calc(100% - 22px); /* Adjust width for padding */
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    resize: vertical;
+}
+
+main.card .send-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+main.card .send-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Style for messages list */
+main.card #messages-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 300px; /* Adjust height as needed */
+    overflow-y: auto; /* Add scroll if messages exceed max height */
+}
+
+main.card #messages-list li {
+    margin-bottom: 10px;
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
     nav ul {
@@ -390,9 +569,5 @@ footer {
 
     nav .dropdown-content {
         position: static;
-    }
-
-    .post-photo {
-        max-width: 100%; /* Ensure the photo does not exceed the screen width */
     }
 }
